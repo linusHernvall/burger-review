@@ -1,7 +1,9 @@
 export interface Post {
   id: number;
-  title: string;
   content: string;
+  rating: number;
+  burger_name: string;
+  restaurant: string;
   created_at: string;
   updated_at: string;
 }
