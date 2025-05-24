@@ -13,7 +13,8 @@ export default function PostCard({ post, onDelete }: PostCardProps) {
   const [isDeleting, setIsDeleting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  async function handleDelete() {
+  async function handleDelete(e: React.MouseEvent) {
+    e.preventDefault(); // Prevent navigation when clicking delete
     if (!confirm("Are you sure you want to delete this review?")) {
       return;
     }
@@ -43,44 +44,50 @@ export default function PostCard({ post, onDelete }: PostCardProps) {
   const formattedDate = new Date(post.created_at).toISOString().split("T")[0];
 
   return (
-    <div className="p-4 border rounded-lg shadow-sm relative">
-      {error && (
-        <div className="p-2 mb-2 text-sm text-destructive bg-destructive/10 rounded-md">
-          {error}
+    <div className="relative">
+      <Link
+        href={`/posts/${post.id}`}
+        className="block p-4 border rounded-lg shadow-sm hover:border-primary/50 transition-colors"
+      >
+        {error && (
+          <div className="p-2 mb-2 text-sm text-destructive bg-destructive/10 rounded-md">
+            {error}
+          </div>
+        )}
+        <div className="flex justify-between items-start">
+          <div>
+            <h2 className="text-xl font-semibold">{post.burger_name}</h2>
+            <p className="text-sm text-muted-foreground">{post.restaurant}</p>
+          </div>
         </div>
-      )}
-      <div className="flex justify-between items-start">
-        <div>
-          <h2 className="text-xl font-semibold">{post.burger_name}</h2>
-          <p className="text-sm text-muted-foreground">{post.restaurant}</p>
+        <div className="mt-2 flex items-center justify-between">
+          <div className="text-sm text-muted-foreground">
+            Rating: {post.rating}/10
+          </div>
+          <div className="text-sm text-muted-foreground">{formattedDate}</div>
         </div>
-        <div className="flex gap-2">
-          <Link
-            href={`/posts/${post.id}/edit`}
-            className="p-2 text-primary hover:bg-primary/10 rounded-md"
-            title="Edit review"
-          >
-            ✏️
-          </Link>
-          <button
-            onClick={handleDelete}
-            disabled={isDeleting}
-            className="p-2 cursor-pointer text-destructive hover:bg-destructive/10 rounded-md disabled:opacity-50 disabled:cursor-not-allowed"
-            title="Delete review"
-          >
-            {isDeleting ? (
-              <span className="animate-pulse">Deleting...</span>
-            ) : (
-              "🗑️"
-            )}
-          </button>
-        </div>
-      </div>
-      <div className="mt-2 flex items-center justify-between">
-        <div className="text-sm text-muted-foreground">
-          Rating: {post.rating}/10
-        </div>
-        <div className="text-sm text-muted-foreground">{formattedDate}</div>
+      </Link>
+      <div className="absolute top-4 right-4 flex gap-2">
+        <Link
+          href={`/posts/${post.id}/edit`}
+          className="p-2 text-primary hover:bg-primary/10 rounded-md"
+          title="Edit review"
+          onClick={(e) => e.stopPropagation()}
+        >
+          ✏️
+        </Link>
+        <button
+          onClick={handleDelete}
+          disabled={isDeleting}
+          className="p-2 cursor-pointer text-destructive hover:bg-destructive/10 rounded-md disabled:opacity-50 disabled:cursor-not-allowed"
+          title="Delete review"
+        >
+          {isDeleting ? (
+            <span className="animate-pulse">Deleting...</span>
+          ) : (
+            "🗑️"
+          )}
+        </button>
       </div>
     </div>
   );

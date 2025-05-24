@@ -19,7 +19,7 @@ export default async function Home() {
   }
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
+    <main className="flex min-h-dvh flex-col items-center justify-between px-4 py-8 lg:p-20">
       <div className="z-10 max-w-5xl w-full items-center justify-between">
         <div className="flex justify-between items-center mb-8">
           <h1 className="text-4xl font-bold">Burger Reviews</h1>
