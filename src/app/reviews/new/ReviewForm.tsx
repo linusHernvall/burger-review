@@ -3,17 +3,24 @@
 import { Post } from "@/types/database";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import ImageUpload from "@/components/ImageUpload";
 
 export default function ReviewForm() {
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [selectedImage, setSelectedImage] = useState<File | null>(null);
 
   async function createPost(formData: FormData) {
     setIsSubmitting(true);
     setError(null);
 
     try {
+      // If there's a selected image, append it to the form data
+      if (selectedImage) {
+        formData.append("image", selectedImage);
+      }
+
       const response = await fetch("/api/posts", {
         method: "POST",
         body: formData,
@@ -88,6 +95,8 @@ export default function ReviewForm() {
           className="w-full p-2 border rounded-md bg-background"
         />
       </div>
+
+      <ImageUpload onImageSelect={(file) => setSelectedImage(file)} />
 
       <div className="space-y-2">
         <label

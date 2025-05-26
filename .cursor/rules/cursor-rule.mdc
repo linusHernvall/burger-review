@@ -9,7 +9,11 @@ Code Style and Structure
 - Write concise, technical TypeScript code with accurate examples.
 - Use functional and declarative programming patterns; avoid classes.
 - Prefer iteration and modularization over code duplication.
-- Use descriptive variable names with auxiliary verbs (e.g., isLoading, hasError).
+- Use descriptive variable names that clearly express intent.
+  - For booleans, use auxiliary verbs (e.g., isLoading, hasError).
+  - For other variables, prefer long, fully spelled-out names over abbreviations (e.g., `userProfileData` instead of `usrData`).
+  - Avoid acronyms and single-letter names except in short-lived scopes like `.map()` callbacks.
+
 - Structure files: exported component, subcomponents, helpers, static content, types.
 
 Naming Conventions

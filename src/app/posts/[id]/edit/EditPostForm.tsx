@@ -3,6 +3,7 @@
 import { Post } from "@/types/database";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import ImageUpload from "@/components/ImageUpload";
 
 interface EditPostFormProps {
   post: Post;
@@ -12,12 +13,18 @@ export default function EditPostForm({ post }: EditPostFormProps) {
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [selectedImage, setSelectedImage] = useState<File | null>(null);
 
   async function updatePost(formData: FormData) {
     setIsSubmitting(true);
     setError(null);
 
     try {
+      // If there's a selected image, append it to the form data
+      if (selectedImage) {
+        formData.append("image", selectedImage);
+      }
+
       const response = await fetch(`/api/posts/${post.id}`, {
         method: "PUT",
         body: formData,
@@ -95,6 +102,11 @@ export default function EditPostForm({ post }: EditPostFormProps) {
           className="w-full p-2 border rounded-md bg-background"
         />
       </div>
+
+      <ImageUpload
+        onImageSelect={(file) => setSelectedImage(file)}
+        currentImageUrl={post.image_url}
+      />
 
       <div className="space-y-2">
         <label

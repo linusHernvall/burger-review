@@ -2,6 +2,8 @@ import { createClient } from "@/lib/supabase";
 import { Post } from "@/types/database";
 import { notFound } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
+import PostActions from "./PostActions";
 
 interface PostPageProps {
   params: {
@@ -10,13 +12,12 @@ interface PostPageProps {
 }
 
 export default async function PostPage({ params }: PostPageProps) {
-  const id = await Promise.resolve(params.id);
   const supabase = createClient();
 
   const { data: post, error } = await supabase
     .from("posts")
     .select("*")
-    .eq("id", id)
+    .eq("id", params.id)
     .single();
 
   if (error || !post) {
@@ -26,14 +27,9 @@ export default async function PostPage({ params }: PostPageProps) {
   return (
     <main className="flex min-h-dvh flex-col items-center px-4 py-8 lg:p-20">
       <div className="w-full max-w-2xl space-y-8">
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between gap-2">
           <h1 className="text-4xl font-bold">{post.burger_name}</h1>
-          <Link
-            href={`/posts/${post.id}/edit`}
-            className="px-4 py-2 text-sm font-medium text-primary-foreground bg-primary hover:bg-primary/90 rounded-md"
-          >
-            Edit Review
-          </Link>
+          <PostActions postId={post.id} />
         </div>
 
         <div className="space-y-6">
@@ -43,6 +39,18 @@ export default async function PostPage({ params }: PostPageProps) {
               Rating: {post.rating}/10
             </div>
           </div>
+
+          {post.image_url && (
+            <div className="relative w-full aspect-video rounded-lg overflow-hidden">
+              <Image
+                src={post.image_url}
+                alt={`${post.burger_name} at ${post.restaurant}`}
+                fill
+                className="object-cover"
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              />
+            </div>
+          )}
 
           <div className="prose prose-lg max-w-none">
             <p className="whitespace-pre-wrap">{post.content}</p>
