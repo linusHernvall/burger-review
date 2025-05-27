@@ -50,13 +50,14 @@ export default function PostsList({ posts }: PostsListProps) {
         >
           <Link href={`/posts/${post.id}`} className="block space-y-2">
             {post.image_url && (
-              <div className="relative aspect-video rounded-lg overflow-hidden">
+              <div className="relative aspect-square rounded-lg overflow-hidden">
                 <Image
                   src={post.image_url}
                   alt={`${post.burger_name} at ${post.restaurant}`}
                   fill
                   className="object-cover transition-transform group-hover:scale-105"
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                  priority
                 />
               </div>
             )}

@@ -3,14 +3,8 @@ import { Post } from "@/types/database";
 import { notFound } from "next/navigation";
 import EditPostForm from "@/app/posts/[id]/edit/EditPostForm";
 
-interface EditPostPageProps {
-  params: {
-    id: string;
-  };
-}
-
-export default async function EditPostPage({ params }: EditPostPageProps) {
-  const id = await Promise.resolve(params.id);
+export default async function EditPostPage(props: { params: { id: string } }) {
+  const id = props.params.id;
   const supabase = createClient();
 
   const { data: post, error } = await supabase

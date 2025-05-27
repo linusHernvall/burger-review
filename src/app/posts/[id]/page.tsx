@@ -5,19 +5,16 @@ import Link from "next/link";
 import Image from "next/image";
 import PostActions from "./PostActions";
 
-interface PostPageProps {
-  params: {
-    id: string;
-  };
-}
-
-export default async function PostPage({ params }: PostPageProps) {
+export default async function PostPage(props: { params: { id: string } }) {
   const supabase = createClient();
+
+  // Use params.id directly (no await)
+  const id = props.params.id;
 
   const { data: post, error } = await supabase
     .from("posts")
     .select("*")
-    .eq("id", params.id)
+    .eq("id", id)
     .single();
 
   if (error || !post) {
@@ -41,13 +38,14 @@ export default async function PostPage({ params }: PostPageProps) {
           </div>
 
           {post.image_url && (
-            <div className="relative w-full aspect-video rounded-lg overflow-hidden">
+            <div className="relative w-full aspect-square rounded-lg overflow-hidden">
               <Image
                 src={post.image_url}
                 alt={`${post.burger_name} at ${post.restaurant}`}
                 fill
                 className="object-cover"
                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                priority
               />
             </div>
           )}
