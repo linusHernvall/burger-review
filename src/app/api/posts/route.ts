@@ -36,7 +36,7 @@ export async function POST(request: Request) {
       }
     }
 
-    const post: Omit<Post, "id" | "created_at" | "updated_at"> = {
+    const post: Omit<Post, "id" | "created_at" | "updated_at" | "user_id"> = {
       content: formData.get("content") as string,
       rating: parseInt(formData.get("rating") as string),
       burger_name: formData.get("burger_name") as string,

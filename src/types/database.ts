@@ -7,6 +7,7 @@ export interface Post {
   created_at: string;
   updated_at: string;
   image_url: string;
+  user_id: string;
 }
 
 export interface Database {
@@ -14,8 +15,10 @@ export interface Database {
     Tables: {
       posts: {
         Row: Post;
-        Insert: Omit<Post, "id" | "created_at" | "updated_at">;
-        Update: Partial<Omit<Post, "id" | "created_at" | "updated_at">>;
+        Insert: Omit<Post, "id" | "created_at" | "updated_at" | "user_id">;
+        Update: Partial<
+          Omit<Post, "id" | "created_at" | "updated_at" | "user_id">
+        >;
       };
     };
   };
